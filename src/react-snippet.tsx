@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {Suspense} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -15,6 +15,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 
 import {
@@ -26,7 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = PropsWithChildren<{
-  title: string;
+  title: string,
 }>;
 
 function Section({children, title}: SectionProps): React.JSX.Element {
