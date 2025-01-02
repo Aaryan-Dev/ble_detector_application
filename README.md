@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
@@ -77,3 +77,62 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+*** To run on IOS first - cd ios -> pod install [ if facing isses delete "Pods" folder and "Podfile.lock" file ] ***
+*** To run on Android first - yarn android [ if facing isses delete .gradle folder] ***
+
+[Codegen] *https://reactnative.dev/docs/the-new-architecture/using-codegen*
+
+_Android_
+Codegen for Android is integrated with the React Native Gradle Plugin (RNGP). The RNGP contains a task that can be invoked that reads the configurations defined in the package.json file and execute Codegen. To run the gradle task, first navigate inside the android folder of your project. Then run:
+
+./gradlew generateCodegenArtifactsFromSchema
+
+_iOS_
+Codegen for iOS relies on some Node scripts that are invoked during the build process. The scripts are located in the SampleApp/node_modules/react-native/scripts/ folder.
+
+The main script is the generate-codegen-artifacts.js script. To invoke the script, you can run this command from the root folder of your app:
+
+node node_modules/react-native/scripts/generate-codegen-artifacts.js
+
+Usage: generate-codegen-artifacts.js -p [path to app] -t [target platform] -o [output path]
+
+Options:
+--help Show help [boolean]
+--version Show version number [boolean]
+-p, --path Path to the React Native project root. [required]
+-t, --targetPlatform Target platform. Supported values: "android", "ios",
+"all". [required]
+-o, --outputPath Path where generated artifacts will be output to.
+
+where:
+
+--path is the path to the root folder of your app.
+--outputPath is the destination where Codegen will write the generated files.
+--targetPlatform is the platform you'd like to generate the code for.
+The Generated Code
+
+Running the script with these arguments:
+
+node node_modules/react-native/scripts/generate-codegen-artifacts.js \
+ --path . \
+ --outputPath ios/ \
+ --targetPlatform ios
+
+**The Codegen CLI**
+
+Calling Gradle or manually calling a script might be hard to remember and it requires a lot of ceremony.
+
+To simplify it, we created a CLI tool that can help you running those tasks: the Codegen cli. This command runs @react-native/codegen for your project. The following options are available:
+
+npx @react-native-community/cli codegen --help
+Usage: rnc-cli codegen [options]
+
+Options:
+--verbose Increase logging verbosity
+--path <path> Path to the React Native project root. (default: "/Users/MyUsername/projects/my-app")
+--platform <string> Target platform. Supported values: "android", "ios", "all". (default: "all")
+--outputPath <path> Path where generated artifacts will be output to.
+-h, --help display help for command
+
+**Native Development** *https://reactnative.dev/docs/native-platform*
