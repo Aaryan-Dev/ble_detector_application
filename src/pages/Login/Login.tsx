@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start', 
-    gap: 10,
+    gap: 5,
   },
   editEmailText: {
     textDecorationLine: 'underline'
