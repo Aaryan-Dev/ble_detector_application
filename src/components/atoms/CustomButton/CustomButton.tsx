@@ -10,13 +10,12 @@ import {
 
 type CustomButtonProps = {
   onClick: () => void;
-  title: string;
   buttonColor: string;
   icon: string;
 };
 
 const CustomButton: React.FC<CustomButtonProps> = props => {
-  const {onClick, title, buttonColor, icon, login} = props;
+  const {onClick, buttonColor, icon, login} = props;
 
   return (
     <TouchableOpacity style={styles.CustomButton} onPress={onClick}>

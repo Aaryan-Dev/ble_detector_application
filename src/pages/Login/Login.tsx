@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {CustomInput, CustomButton} from 'components/atoms';
 import {
   View,
@@ -7,17 +8,43 @@ import {
   Image,
   Button,
   Alert,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
+interface InitialFormValue {
+  email: string;
+  password: string;
+}
+
 const Login: React.FC = () => {
-  const handleInputOnChange = () => {
-    console.log('handleInputOnChange');
+  const [showedit, setShowEdit] = useState(false);
+
+  const initialValue: InitialFormValue = {
+    email: '',
+    password: '',
   };
 
-  const handleLogin = () => {
-    Alert.alert('Logged In')
-  }
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('Email is required')
+      .matches(
+        /^(?!\.)([A-Z0-9._%+-]+)@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        'Email address must be valid',
+      )
+  });
+
+  const handleLogin = values => {
+    console.log('values', values);
+    setShowEdit(true);
+  };
+
+  const handleEdit = () => {
+    setShowEdit(false);
+  };
 
   return (
     <SafeAreaView>
@@ -29,35 +56,84 @@ const Login: React.FC = () => {
           />
         </View>
 
-          <View>
-            <Text style={styles.loginText}>Syllab</Text>
-          </View>
-
-          <View style={styles.emailInputBox}>
-            <View style={styles.emailInput}>
-              <CustomInput
-                inputMode="text"
-                keyboardType="email-address"
-                placeholder="Enter Syllab email address"
-              />
-            </View>
-          </View>
-          <View style={styles.loginButton}>
-            <CustomButton
-              buttonColor={'white'}
-              onClick={handleLogin}
-              title="Login"
-              icon={
-                <FontAwesome6
-                  name="arrow-right"
-                  color="white"
-                  iconStyle="solid"
-                />
-              }
-              login={<Text style={styles.LoginText}>Login</Text>}
-            />
-          </View>
+        <View>
+          <Text style={styles.loginText}>Syllab</Text>
         </View>
+
+        <Formik
+          initialValues={initialValue}
+          validationSchema={validationSchema}
+          onSubmit={values => handleLogin(values)}
+          validateOnChange={false}
+          validateOnBlur={false}>
+          {formik => {
+            return (
+              <View style={styles.emailInputBox}>
+                <View style={styles.emailInput}>
+                  <View style={styles.showEditbox}>
+                    {showedit && (
+                      <TouchableOpacity
+                        onPress={handleEdit}
+                        style={styles.editEmail}>
+                        <Text style={styles.editEmailText}>
+                          {formik?.values?.email}
+                        </Text>
+                        <FontAwesome6
+                          name="pen"
+                          color="black"
+                          iconStyle="solid"
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {!showedit && (
+                    <CustomInput
+                      error={formik?.errors?.email}
+                      style={styles.input}
+                      onChangeText={formik?.handleChange('email')}
+                      onBlur={formik?.handleBlur('email')}
+                      value={formik?.values?.email}
+                      inputMode="text"
+                      keyboardType="email-address"
+                      placeholder="Enter syllab email address"
+                    />
+                  )}
+                  {showedit && (
+                    <CustomInput
+                      error={formik?.errors?.password}
+                      style={styles.input}
+                      onChangeText={formik?.handleChange('password')}
+                      onBlur={formik?.handleBlur('password')}
+                      value={formik?.values?.password}
+                      inputMode="text"
+                      keyboardType="password"
+                      placeholder="Password"
+                    />
+                  )}
+                </View>
+                <View style={styles.loginButton}>
+                  <CustomButton
+                    buttonColor={'white'}
+                    onClick={formik?.handleSubmit}
+                    icon={
+                      <FontAwesome6
+                        name="arrow-right"
+                        color="white"
+                        iconStyle="solid"
+                      />
+                    }
+                    login={
+                      <Text style={styles.LoginText}>
+                        {!showedit ? 'Enter' : 'Login'}
+                      </Text>
+                    }
+                  />
+                </View>
+              </View>
+            );
+          }}
+        </Formik>
+      </View>
     </SafeAreaView>
   );
 };
@@ -72,10 +148,13 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
   },
+  showEditbox: {
+   height: 15,
+  },
   syllabLogo: {
     width: 300,
     height: 300,
-    borderRadius: '10%',
+    borderRadius: '3%',
   },
   loginText: {
     padding: 10,
@@ -85,11 +164,19 @@ const styles = StyleSheet.create({
   },
   emailInputBox: {
     width: '100%',
-    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   emailInput: {
     width: '100%',
+  },
+  editEmail: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start', 
+    gap: 10,
+  },
+  editEmailText: {
+    textDecorationLine: 'underline'
   },
   loginButton: {
     marginTop: 1,
@@ -101,6 +188,11 @@ const styles = StyleSheet.create({
   },
   LoginText: {
     color: 'white',
+  },
+  input: {
+    borderWidth: 1,
+    width: '100%',
+    padding: 5,
   },
 });
 
