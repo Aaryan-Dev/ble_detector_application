@@ -1,25 +1,36 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import {TextInput, StyleSheet} from 'react-native';
 
-const CustomInput: React.FC = () => {
+type CustomInput = {
+  inputMode: string;
+  keyboardType: string;
+  placeholder: string;
+  height: number;
+  handleInputOnChange: () => void;
+};
 
-    return (
-      <>
+const CustomInput: React.FC<CustomInputProps> = props => {
+  const {inputMode, keyboardType, placeholder, handleInputOnChange, height} = props;
+
+  return (
+    <>
       <TextInput
-      style={styles.input}
-      // onChangeText={handleInputOnChange}
-      inputMode="text"
-      keyboardType="email-address"
-      placeholder="Enter Syllab email address"
+        style={styles.input}
+        height={height}
+        onChangeText={handleInputOnChange}
+        inputMode={inputMode}
+        keyboardType={keyboardType}
+        placeholder={placeholder}
       />
-      </>
-    )
-}
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    padding: 2,
+    width: '100%',
+    padding: 5,
   },
 });
 
