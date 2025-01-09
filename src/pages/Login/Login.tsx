@@ -8,6 +8,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
 const Login: React.FC = () => {
   const handleInputOnChange = () => {
@@ -28,27 +29,35 @@ const Login: React.FC = () => {
           />
         </View>
 
-        <View>
-          <Text style={styles.loginText}>Syllab</Text>
-        </View>
+          <View>
+            <Text style={styles.loginText}>Syllab</Text>
+          </View>
 
-        <View style={styles.emailInputBox}>
-          <View style={styles.emailInput}>
-            <CustomInput
-              inputMode="text"
-              keyboardType="email-address"
-              placeholder="Enter Syllab email address"
+          <View style={styles.emailInputBox}>
+            <View style={styles.emailInput}>
+              <CustomInput
+                inputMode="text"
+                keyboardType="email-address"
+                placeholder="Enter Syllab email address"
+              />
+            </View>
+          </View>
+          <View style={styles.loginButton}>
+            <CustomButton
+              buttonColor={'white'}
+              onClick={handleLogin}
+              title="Login"
+              icon={
+                <FontAwesome6
+                  name="arrow-right"
+                  color="white"
+                  iconStyle="solid"
+                />
+              }
+              login={<Text style={styles.LoginText}>Login</Text>}
             />
           </View>
         </View>
-        <View style={styles.loginButton}>  
-          <CustomButton
-            buttonColor={'white'}
-            onClick={handleLogin}
-            title="Login"
-          />
-        </View>
-      </View>
     </SafeAreaView>
   );
 };
@@ -86,9 +95,11 @@ const styles = StyleSheet.create({
     marginTop: 1,
     width: '100%',
     backgroundColor: 'black',
-    alignItems: 'flex-start',
   },
   CustomButtonLogin: {
+    color: 'white',
+  },
+  LoginText: {
     color: 'white',
   },
 });
