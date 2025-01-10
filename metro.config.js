@@ -13,7 +13,7 @@ const path = require('path');
 module.exports = {
   ...mergeConfig(getDefaultConfig(__dirname), config),
   entry: './index.js',
-  resolve: {
+  resolver: {
     // added because react-dnd was breaking with react 18, check issue https://github.com/react-dnd/react-dnd/issues/3433
     fallback: {
       'react/jsx-runtime': 'react/jsx-runtime.js',

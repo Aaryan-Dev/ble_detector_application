@@ -21,7 +21,7 @@ interface InitialFormValue {
   password: string;
 }
 
-const Login: React.FC = () => {
+const Login: React.FC = ({navigation}) => {
   const [showedit, setShowEdit] = useState(false);
 
   const initialValue: InitialFormValue = {
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
   const handleLogin = values => {
     setShowEdit(true);
     if (values?.password) {
-      Alert.alert(values?.password);
+      navigation.navigate('Home');
     }
   };
 
