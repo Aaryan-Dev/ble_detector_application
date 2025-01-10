@@ -14,6 +14,7 @@ import {
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import {regex} from 'utils';
 
 interface InitialFormValue {
   email: string;
@@ -31,18 +32,19 @@ const Login: React.FC = () => {
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .required('Email is required')
-      .matches(
-        /^(?!\.)([A-Z0-9._%+-]+)@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        'Email address must be valid',
-      )
+      .matches(regex.basicEmailRegex, 'Email address must be valid')
+      .matches(regex.syllabEmailRegex, 'Email must contain syllab.in domain'),
   });
 
   const handleLogin = values => {
-    console.log('values', values);
     setShowEdit(true);
+    if (values?.password) {
+      Alert.alert(values?.password);
+    }
   };
 
-  const handleEdit = () => {
+  const handleEdit = formik => {
+    formik.setFieldValue('password', '');
     setShowEdit(false);
   };
 
@@ -73,7 +75,7 @@ const Login: React.FC = () => {
                   <View style={styles.showEditbox}>
                     {showedit && (
                       <TouchableOpacity
-                        onPress={handleEdit}
+                        onPress={() => handleEdit(formik)}
                         style={styles.editEmail}>
                         <Text style={styles.editEmailText}>
                           {formik?.values?.email}
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   showEditbox: {
-   height: 15,
+    height: 15,
   },
   syllabLogo: {
     width: 300,
@@ -172,11 +174,11 @@ const styles = StyleSheet.create({
   editEmail: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start', 
+    justifyContent: 'flex-start',
     gap: 5,
   },
   editEmailText: {
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   loginButton: {
     marginTop: 1,
