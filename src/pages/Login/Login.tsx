@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   syllabLogo: {
     width: 300,
     height: 300,
-    borderRadius: '3%',
+    borderRadius: 3,
   },
   loginText: {
     padding: 10,
